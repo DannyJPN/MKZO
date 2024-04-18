@@ -1,0 +1,14 @@
+# Nmap 7.70 scan initiated Fri Dec 18 11:25:21 2020 as: nmap -sU -p 69 -oA tftpscan 192.168.203.0/24
+Host: 192.168.203.2 ()	Status: Up
+Host: 192.168.203.2 ()	Ports: 69/open|filtered/udp//tftp///
+Host: 192.168.203.132 ()	Status: Up
+Host: 192.168.203.132 ()	Ports: 69/open|filtered/udp//tftp///
+Host: 192.168.203.135 ()	Status: Up
+Host: 192.168.203.135 ()	Ports: 69/closed/udp//tftp///
+Host: 192.168.203.138 ()	Status: Up
+Host: 192.168.203.138 ()	Ports: 69/closed/udp//tftp///
+Host: 192.168.203.254 ()	Status: Up
+Host: 192.168.203.254 ()	Ports: 69/open|filtered/udp//tftp///
+Host: 192.168.203.133 ()	Status: Up
+Host: 192.168.203.133 ()	Ports: 69/closed/udp//tftp///
+# Nmap done at Fri Dec 18 11:25:27 2020 -- 256 IP addresses (6 hosts up) scanned in 5.66 seconds

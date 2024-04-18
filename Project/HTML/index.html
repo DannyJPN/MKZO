@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CISCO VoIP security</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+<div id="bg">
+  <div id="b">
+    <div id="wrap">
+      <div id="header">
+        <ul id="nav">
+          <li ><a href="#">HOME</a></li>
+
+        </ul>
+      </div>
+      <!-- /header -->
+      <div id="content">
+        <div class="side fr">
+          <div id="bm">
+            
+            <ul class="meun">
+              <li class="grey"><a href="#">Home</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="main fl">
+		  <div class="text">
+		  <h1>Research and practical  testing in the field of thesecurity in corporate VoIP solutions–Cisco</h1>
+		  
+		  </div>
+          <div class="text">
+            <h2>Bezpečnost na poli CISCO VoIP</h2>
+            <p>	CISCO zařízení jsou silným hráčem na poli síťových zařízení.
+			Do jejich repertoáru patří kromě mezilehlých síťových prvků, tedy routerů, switchů, firewallů apod také VoIP zařízení.
+	CISCO nabízí IP telefony, jejich routery dokáží  fungovat jako ústředna - a to vše, stejně jako jakékoliv jiné zařízení na síti, přenáší data.
+	A data mají cenu. Proto jsou i ony potenciálním terčem útoků.
+	Jen za poslední rok bylo objeveno hned několik zranitelností různých druhů, které umožňovaly získat konfigurace či jiná data.
+	Například některé CISCO IP telefony mají <a href="https://tools.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-20200205-voip-phones-rce-dos">zranitelnost</a>, která umožňuje změnit jeho konfiguraci skrze protokol CDP, který je obecně lepší raději vypnout.
+	Další důležitý problém byla třeba <a href="https://tools.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-voip-phones-rce-dos-rB6EeRXs">zranitelnost</a> we webové aplikaci pro konfiguraci IP telefonů CISCO, která umožňuje vzdálené spuštění kódu nebo DoS útok.
+	 
+    </p>
+    <p>
+Zranitelné body však nemusí být pouze na konkrétních zařízeních. Zařízení fungující na síti si často stahují různé informace ze sítě. Mohou to být různé soubory, IP adresy, celé obrazy systémů, nebo například konfigurační soubory.
+    CISCO zařízení často používají ke stahování těchto souborů protokol TFTP. To má však háček. TFTP protokol je rychlý a jednoduchý, ale jeho zabezpečení je spekulativní. 
+	TFTP protokol totiž neobsahuje sám o sobě žádné možnosti, jak ho zabezpečit. Díky své rychlosti a velmi malému objemu však stále poměrně užívaný právě pro výše zmíněné účely.
+	V praktické části se pokusím toho využít a pokusit se najít v síti TFTP server a upravit na něm konfigurační soubor.
+	To by mohlo vyústit v převzetí kontroly nad zařízením, kterého stahuje. To platí pro IP telefony, ale může se to týkat kteréhokoli zařízení, které takto dokáže stahovat konfigurace.
+    
+    </p>
+          </div>
+          <div class="text">
+            <h2>CISCO konfigurační soubor</h2>
+            <p>
+            Konfigurační soubory CISCO zařízení jsou řádkově orientované soubory, kde jeden řádek definuje jednu vlastnost.
+            U  zařízení, které mají vlastní příkazový řádek, je soubor stavěn tak, aby příkazy šly nakopírovat přímo do jeho konzole a změnily tak celou konfiguraci.
+            V případě CISCO telefonů, které konzolu nemají, mají jen webové rozhraní, vypadá soubor např takto:<br/>
+<i>            
+image_version: "P0S3-07-4-00";<br/>
+user_info: "phone";           <br/>
+line1_name: "1051";           <br/>
+line1_displayname: "";        <br/>
+line1_shortname: "";          <br/>
+line1_authname: "1051";       <br/>
+line1_password: "secretpassword";         <br/>
+line2_name: "";               <br/>
+line2_displayname: "";        <br/>
+line2_shortname: "";          <br/>
+line2_authname: "";           <br/>
+line2_password: "";           <br/>
+auto_answer: "0";             <br/>
+speed_line1: "";              <br/>
+speed_label1: "";             <br/>
+speed_line2: "";              <br/>
+speed_label2: "";             <br/>
+speed_line3: "";              <br/>
+speed_label3: "";             <br/>
+speed_line4: "";              <br/>
+speed_label4: "";             <br/>
+speed_line5: "";              <br/>
+speed_label5: "";             <br/>
+call_hold_ringback: "0";      <br/>
+dnd_control: "0";             <br/>
+anonymous_call_block: "0";    <br/>
+callerid_blocking: "0";       <br/>
+enable_vad: "0";              <br/>
+semi_attended_transfer: "1";  <br/>
+call_waiting: "1";            <br/>
+cfwd_url: "";                 <br/>
+cnf_join_enable: "1";         <br/>
+phone_label: "";              <br/>
+preferred_codec: "g711ulaw";  <br/>
+</i>   
+<br/>
+Všimněte si,že v tomto souboru je napsáno heslo ve formátu čistého textu. Získat tento soubor by mohlo být velice nebezpečné.
+   
+   </p>
+   
+          </div>
+		    <div class="text">
+            <h2>Prostředí testu</h2>      
+            Pro experiment jsem si vytvořil několik virtuálních strojů ve VMware s Linux Debian, a na jeden z nich jsem nainstaloval TFTP server.
+            Útok povedu ze stroje Kali Linux, rovněž ve VMware.
+            Jelikož jde jen o ukázkovou síť, je vše na jednom subnetu, a sice 192.168.203.0/24.
+            Budu provádět útok na TFTP server, takže vlastně nebudu potřebovat ani IP telefon.
+            Pokusím se v tomto experimentu získat předpřipravený konfigurační soubor, který je na TFTP serveru umístěn.
+             </div>
+          
+          <div class="text">
+            <h2>TFTP útok</h2>
+            <p>Pro provedení samotného útoku na TFTP server musíme tento server na síti nejdříve najít. K tomu lze použít například skener NMAP, který je jedním z nejznámějších síťových skenerů
+            K útoku použijeme operační systém Linux Kali, který nepotřebuje tolik zdrojů jako Windows a můžeme jej spustit na podstatně slabších a méně nápadných zařízeních a hlavně - obsahuje nepřeberné množství bezpečnostních nástrojů.
+            NMAP zde je také, ale pokud by nebyl, tak jej nainstalujeme příkazem <i>apt install nmap</i> . V případě použití systému Windows má NMAP i spustitelný instalátor ke stažení na adrese <a href="https://nmap.org/download.html">https://nmap.org/download.html</a>.
+			TFTP pracuje na portu UDP 69, takže se můžeme omezit na hledání tohoto portu. Příkaz <i>nmap -sU -p 69 192.168.203.0/24 </i> dokáže zjistit, 
+			u kterých strojů na dané síti je podezření aktivní port UDP (příznak -sU) 69 (příznak -p 69).
+			Stoprocentní jistota to není, protože port může být filtrován, a základní schopnosti NMAP, popř jeho konkurentů masscan či AMAP, na tento rozdíl nemusejí stačit.
+			Výstup z programu NMAP dává tento výstup:<br/><i>
+			Nmap scan report for 192.168.203.2                                  <br/>
+Host is up (0.00016s latency).                                                  <br/>
+                                                                                <br/>
+PORT   STATE         SERVICE                                                    <br/>
+69/udp open|filtered tftp                                                       <br/>
+MAC Address: 00:50:56:F6:DC:0A (VMware)                                         <br/>
+                                                                                <br/>
+Nmap scan report for 192.168.203.132                                            <br/>
+Host is up (0.00030s latency).                                                  <br/>
+                                                                                <br/>
+PORT   STATE         SERVICE                                                    <br/>
+69/udp open|filtered tftp                                                       <br/>
+MAC Address: 00:0C:29:4D:F2:3B (VMware)                                         <br/>
+                                                                                <br/>
+Nmap scan report for 192.168.203.135                                            <br/>
+Host is up (0.00066s latency).                                                  <br/>
+                                                                                <br/>
+PORT   STATE  SERVICE                                                           <br/>
+69/udp closed tftp                                                              <br/>
+MAC Address: 00:0C:29:D7:1C:C5 (VMware)                                         <br/>
+                                                                                <br/>
+Nmap scan report for 192.168.203.138                                            <br/>
+Host is up (-0.091s latency).                                                   <br/>
+                                                                                <br/>
+PORT   STATE  SERVICE                                                           <br/>
+69/udp closed tftp                                                              <br/>
+MAC Address: 00:0C:29:61:8E:31 (VMware)                                         <br/>
+                                                                                <br/>
+Nmap scan report for 192.168.203.254                                            <br/>
+Host is up (0.00025s latency).                                                  <br/>
+                                                                                <br/>
+PORT   STATE         SERVICE                                                    <br/>
+69/udp open|filtered tftp                                                       <br/>
+MAC Address: 00:50:56:E3:E0:6A (VMware)                                         <br/>
+                                                                                <br/>
+Nmap scan report for 192.168.203.133                                            <br/>
+Host is up (0.000033s latency).                                                 <br/>
+                                                                                <br/>
+PORT   STATE  SERVICE                                                           <br/>
+69/udp closed tftp                                                              <br/>
+</i>
+			<br/>
+            Na výstupu z NMAPu je vidět, že na některých strojích je port 69 označen jako open|filtered. NMAP tedy zjistil, že na těchto strojích port určitě není zavřený. Nedokáže ale rozlišit, jestli je otevřený nebo filtrovaný, protože na jeho pakety daný port neodpovídá.
+            Zavřený port by posílal informaci o tom, že je zavřený, neboli zprávu Connection refused.
+            Proti strojům, které mají port ve stavu jiném než closed, tedy povedeme samotný TFTP útok, který spočívá v hádání názvu souboru s konfigurací brutální silou.
+            Pravda, je to poměrně málo sofistikovaný útok, a také je poměrně "hlasitý", tedy jinak řečeno zanechává po sobě velké množství logů.
+            Ale jeho následky mohou být velké.
+            K tomuto útoku použijeme nástroj Cisco-Torch. Jedná se o vulnerability scanner specializovaný na zařízení CISCO napsaný v Perlu.
+			Zjistil jsem, že je poměrně velký problém ho úspěšně dostat do Debianu kvůli jeho závislostem na Perlu, ale v Kali je již předinstalován.
+            Cisco-Torch ovládá několik typů scanů, fingerprinting a umí také provést útok brutální sílou.
+			Seznam názvů konfiguračního souboru uložíme do souboru <i>brutefile.txt</i>, který předáme nástroji Cisco-Torch.
+			Ten je třeba předem vytvořit. V našem příkladu použijeme jen krátký seznam výchozích názvů, ale je samozřejmě možné vytvořit si libovolný seznam.
+			Použijeme tedy příkaz <i>cisco-torch -g -j -b -F brutefile.txt</i> pro každý stroj, kde je podezření na otevřený port 69.
+			To se dá udělat dvěma způsoby: buď vybereme všechny IP adresy potenciálních serverů manuálně, nebo pustíme cisco-torch na celý subnet.
+			Tím se stane použití NMAPu zbytečné, protože Cisco-Torch si oskenuje otevřené porty sám,  a půjde o hlasitější útok.
+			Použiji tento způsob kvůli jednoduchosti, protože vybírat jednotlivá zařízení by mohlo zabrat hodně času.
+            Výstup programu vypadá takto:
+            <i>
+            Using config file torch.conf...                                  <br/>     
+Loading include and plugin ...                                              <br/>
+                                                                            <br/>
+###############################################################             <br/>
+#   Cisco Torch Mass Scanner                   #                            <br/>
+#   Becase we need it...                                      #             <br/>
+#   http://www.arhont.com/cisco-torch.pl                      #             <br/>
+###############################################################             <br/>
+                                                                            <br/>
+List of targets contains 256 host(s)                                        <br/>
+Will fork 50 additional scaner processes                                    <br/>
+//output omitted                                                                            <br/>
+4278:   Checking 192.168.203.132 ...                                        <br/>
+*** Found  TFTP server                                                      <br/>
+//output omitted
+--->                                                                        <br/>
+- All scans done. Cisco Torch Mass Scanner  -                               <br/>
+---> Exiting.                                                               <br/>
+</i><br/>
+K žádnému stažení souboru však nedošlo. Ani po různých pokusech manipulovat s parametry programu se mi nepodařilo útok na stažení provést.
+
+            </p>
+          </div>
+	      
+		    <div class="text">
+            <h2>Zhodnocení</h2>
+            <p>
+            Provedení útoku na TFTP a stažení souboru nástrojem Cisco-Torch se mi nepodařilo.
+             Avšak podle autorů nástroje to lze, domnívám se tedy, že jsem udělal nějakou chybu.
+             Je možné, že TFTP HPA server, který jsem použil, obsahuje nějakou mně neznámou funkcionalitu nad TFTP protokolem, který útoku zabránil. Toto rozeberu podrobně v další části.
+             Podařilo se mi jej na síti však přinejmenším najít.
+             
+            </p>
+        
+          </div>	  
+          
+		    <div class="text">
+            <h2>Závěr</h2>
+            <p>
+            Soudě podle nalezených reportů CVE i mého nepříliš úspěšného testu se domnívám, že CISCO zařízení se mohou stát cílem útoku stejně snadno jako jakákoliv jiná zařízení na síti.
+            I ony mají své zranitelnosti, a jak jsem se snažil prokázat, nemusí být nutně na samotných zařízeních. 
+            Nepodařilo se mi útok provést, ale neznamená to, že to nejde.
+            Je možné, že by se mi podařilo např pouhým cyklením příkazu <i>tftp get</i> s jednotlivými názvy soubor získat.
+            
+            </p>
+        <p>
+        Obecné doporučení pro bezpečnost zařízení je mimo jiné udržovat je aktualizované. To vyřeší obvykle zranitelnosti na daném zařízení.
+        Ale útok na TFTP, který jsem se pokusil provést, žádnou "zranitelnost" nevyužívá, využívá samotné implementace TFTP protokolu, která neobsahuje žádné kontrolní mechanismy.
+        Obranou proti tomuhle útoku je buď vůbec nepoužívat TFTP, ale jeho robustnější verze FTP/FTPS, které umožňuji autentizaci, anebo použít kontrolní mechanismy nad úrovní TFTP protokolu. 
+        Domnívám se, že toto možná implementuje TFTP HPA server, který jsem použil. Toto se může týkat např přidání TLS/SSL, resp tedy DTLS, protože TFTP používá UDP protokol, dále např zamezení přístupu jiným zařízením, než těm, kterým patří daná konfigurace, 
+        pomocí firewallu, lokálních accesslistů apod.
+        
+        </p>
+        
+          </div>     
+          
+          
+		    <div class="text">
+            <h2>Zdroje</h2>
+            <p> <a href="https://linuxhint.com/install_tftp_server_ubuntu/">https://linuxhint.com/install_tftp_server_ubuntu/</a> </p>
+            <p> <a href="https://www.mynotepaper.com/install-and-use-cisco-torch-hacking-tool">https://www.mynotepaper.com/install-and-use-cisco-torch-hacking-tool</a> </p>
+            <p> <a href="https://blog.romaingre.net/2014/05/add-kali-repository-on-debian/">https://blog.romaingre.net/2014/05/add-kali-repository-on-debian/</a> </p>
+            <p> <a href="https://flylib.com/books/en/3.418.1.41/1/">https://flylib.com/books/en/3.418.1.41/1/</a> </p>
+            <p> <a href="https://www.jscape.com/blog/what-is-tftp">https://www.jscape.com/blog/what-is-tftp</a> </p>
+            <p> <a href=""></a> </p>
+            
+          </div>
+        </div>
+        <!-- /content -->
+      </div>
+      <div class="clearfix"></div>
+      <div id="footer">
+        <div id="ftinner">
+          <div class="ftlink fl">
+            <p id="copyright">© 2008. All Rights Reserved. <br/>
+              Designed by <a href="http://www.free-css-templates.com/">Free CSS Templates</a>, Thanks to <a href="http://www.openwebdesign.org/">pro web design</a></p>
+          </div>
+        </div>
+      </div>
+      <!-- /footer -->
+    </div>
+  </div>
+</div>
+</body>
+</html>

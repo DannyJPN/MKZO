@@ -1,0 +1,43 @@
+# Nmap 7.70 scan initiated Fri Dec 18 11:25:21 2020 as: nmap -sU -p 69 -oA tftpscan 192.168.203.0/24
+Nmap scan report for 192.168.203.2
+Host is up (0.00016s latency).
+
+PORT   STATE         SERVICE
+69/udp open|filtered tftp
+MAC Address: 00:50:56:F6:DC:0A (VMware)
+
+Nmap scan report for 192.168.203.132
+Host is up (0.00030s latency).
+
+PORT   STATE         SERVICE
+69/udp open|filtered tftp
+MAC Address: 00:0C:29:4D:F2:3B (VMware)
+
+Nmap scan report for 192.168.203.135
+Host is up (0.00066s latency).
+
+PORT   STATE  SERVICE
+69/udp closed tftp
+MAC Address: 00:0C:29:D7:1C:C5 (VMware)
+
+Nmap scan report for 192.168.203.138
+Host is up (-0.091s latency).
+
+PORT   STATE  SERVICE
+69/udp closed tftp
+MAC Address: 00:0C:29:61:8E:31 (VMware)
+
+Nmap scan report for 192.168.203.254
+Host is up (0.00025s latency).
+
+PORT   STATE         SERVICE
+69/udp open|filtered tftp
+MAC Address: 00:50:56:E3:E0:6A (VMware)
+
+Nmap scan report for 192.168.203.133
+Host is up (0.000033s latency).
+
+PORT   STATE  SERVICE
+69/udp closed tftp
+
+# Nmap done at Fri Dec 18 11:25:27 2020 -- 256 IP addresses (6 hosts up) scanned in 5.66 seconds

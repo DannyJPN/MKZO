@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 7.70 scan initiated Fri Dec 18 11:25:21 2020 as: nmap -sU -p 69 -oA tftpscan 192.168.203.0/24 -->
+<nmaprun scanner="nmap" args="nmap -sU -p 69 -oA tftpscan 192.168.203.0/24" start="1608287121" startstr="Fri Dec 18 11:25:21 2020" version="7.70" xmloutputversion="1.04">
+<scaninfo type="udp" protocol="udp" numservices="1" services="69"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1608287121" endtime="1608287127"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.203.2" addrtype="ipv4"/>
+<address addr="00:50:56:F6:DC:0A" addrtype="mac" vendor="VMware"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="udp" portid="69"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="tftp" method="table" conf="3"/></port>
+</ports>
+<times srtt="158" rttvar="5000" to="100000"/>
+</host>
+<host starttime="1608287121" endtime="1608287127"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.203.132" addrtype="ipv4"/>
+<address addr="00:0C:29:4D:F2:3B" addrtype="mac" vendor="VMware"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="udp" portid="69"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="tftp" method="table" conf="3"/></port>
+</ports>
+<times srtt="296" rttvar="5000" to="100000"/>
+</host>
+<host starttime="1608287121" endtime="1608287127"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.203.135" addrtype="ipv4"/>
+<address addr="00:0C:29:D7:1C:C5" addrtype="mac" vendor="VMware"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="udp" portid="69"><state state="closed" reason="port-unreach" reason_ttl="64"/><service name="tftp" method="table" conf="3"/></port>
+</ports>
+<times srtt="664" rttvar="2887" to="100000"/>
+</host>
+<host starttime="1608287121" endtime="1608287127"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.203.138" addrtype="ipv4"/>
+<address addr="00:0C:29:61:8E:31" addrtype="mac" vendor="VMware"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="udp" portid="69"><state state="closed" reason="port-unreach" reason_ttl="64"/><service name="tftp" method="table" conf="3"/></port>
+</ports>
+<times srtt="-90549" rttvar="51225" to="114351"/>
+</host>
+<host starttime="1608287121" endtime="1608287127"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.203.254" addrtype="ipv4"/>
+<address addr="00:50:56:E3:E0:6A" addrtype="mac" vendor="VMware"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="udp" portid="69"><state state="open|filtered" reason="no-response" reason_ttl="0"/><service name="tftp" method="table" conf="3"/></port>
+</ports>
+<times srtt="248" rttvar="5000" to="100000"/>
+</host>
+<host starttime="1608287127" endtime="1608287127"><status state="up" reason="localhost-response" reason_ttl="0"/>
+<address addr="192.168.203.133" addrtype="ipv4"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="udp" portid="69"><state state="closed" reason="port-unreach" reason_ttl="64"/><service name="tftp" method="table" conf="3"/></port>
+</ports>
+<times srtt="33" rttvar="5000" to="100000"/>
+</host>
+<runstats><finished time="1608287127" timestr="Fri Dec 18 11:25:27 2020" elapsed="5.66" summary="Nmap done at Fri Dec 18 11:25:27 2020; 256 IP addresses (6 hosts up) scanned in 5.66 seconds" exit="success"/><hosts up="6" down="250" total="256"/>
+</runstats>
+</nmaprun>
